@@ -2,7 +2,7 @@
 /**
  * Plugin Name: クローラー個別制御
  * Description: 投稿・固定ページの編集画面で「ALL拒否モード」を有効にすると、チェックしたクローラーのみアクセスを許可します。デフォルトはALL許可です。
- * Version: 1.2
+ * Version: 1.3
  * Author: donnma
  * Author URI: https://donnma.com/
  * Plugin URI: https://github.com/donnma777/custom-crawler-control
@@ -20,19 +20,37 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function ggc_get_allowable_bots() {
     return [
-        // ★★★ 1. Google (検索エンジン & AI) ★★★
-        'Google_Core' => [
+        // ★★★ Google (検索エンジン & AI) ★★★
+'Google_Core_Search' => [
             'uas' => [
-                'Googlebot', 'AdsBot-Google', 'Mediapartners-Google',
-                'Google-Extended', 'GoogleOther', 'GoogleOther-Image', 
-                'GoogleOther-Video', 'GoogleOther-Mobile', 'Gemini',
+                'Googlebot', 'GoogleOther-Mobile', 'GoogleOther-Image', 'GoogleOther-Video'
             ], 
-            'label' => 'Google (検索エンジン & AI全般)',
-            'group_label' => '1. Google (検索エンジン & AI)',
-            'description' => 'コア検索、広告、画像、動画、そしてGeminiなどのGoogle AIクローラーを含みます。',
+            'label' => 'Google コア検索 (ウェブ, 画像, 動画)',
+            'group_label' => '1. Google 検索コア',
+            'description' => 'Googleの主要な検索エンジンクローラー。インデックス登録に必須です。',
+        ],
+
+        // ★★★ Google AI 学習 & データ収集 ★★★
+        'Google_AI_Data' => [
+            'uas' => [
+                'Gemini', 'Google-Extended', 'GoogleOther'
+            ], 
+            'label' => 'Google AI / データ収集 (Gemini, Extended)',
+            'group_label' => '1. Google AI / データ収集',
+            'description' => 'GeminiなどのAIサービスや、広範なデータ収集を目的としたクローラーです。',
         ],
         
-        // ★★★ 2. Microsoft / Bing (検索エンジン & 広告) ★★★
+        // ★★★ Google 広告 & コンテンツ ★★★
+        'Google_Ads' => [
+            'uas' => [
+                'AdsBot-Google', 'Mediapartners-Google'
+            ], 
+            'label' => 'Google 広告 & コンテンツ連携',
+            'group_label' => '1. Google 広告 / コンテンツ連携',
+            'description' => 'Google広告（Ads）やAdSenseの連携に必要なボットです。',
+        ],
+        
+        // ★★★ Microsoft / Bing (検索エンジン & 広告) ★★★
         'Bing_Core' => [
             'uas' => ['bingbot', 'adidxbot', 'BingPreview'], 
             'label' => 'Bing (Microsoft 検索 & 広告)',
@@ -40,7 +58,7 @@ function ggc_get_allowable_bots() {
             'description' => 'Bingのコア検索クローラー、広告ボットを含みます。',
         ],
         
-        // ★★★ 3. 主要AI / LLM クローラー ★★★
+        // ★★★  主要AI / LLM クローラー ★★★
         'OpenAI' => [
             'uas' => ['GPTBot', 'ChatGPT-User', 'OAI-SearchBot'], 
             'label' => 'GPTBot (OpenAI / ChatGPT)',
@@ -78,7 +96,7 @@ function ggc_get_allowable_bots() {
             'description' => 'AppleのAIや検索サービス向けボットです。',
         ],
 
-        // ★★★ 4. SNS / プレビュー系（超重要） ★★★
+        // ★★★  SNS / プレビュー系（超重要） ★★★
         'Meta_SNS' => [
             'uas' => ['facebookexternalhit', 'Facebot'], 
             'label' => 'Meta / Facebook (OGP/プレビュー)',
@@ -110,7 +128,7 @@ function ggc_get_allowable_bots() {
             'description' => 'Pinterestでの画像・リンクプレビューに必須です。',
         ],
         
-        // ★★★ 5. SEO / 分析 / 監視ツール ★★★
+        // ★★★ SEO / 分析 / 監視ツール ★★★
         'Ahrefs' => [
             'uas' => ['AhrefsBot', 'AhrefsSiteAudit'], 
             'label' => 'AhrefsBot (SEO分析)',
@@ -142,7 +160,7 @@ function ggc_get_allowable_bots() {
             'description' => 'その他の主要なSEO・分析ツールボットです。',
         ],
 
-        // ★★★ 6. その他検索エンジン & アーカイブ ★★★
+        // ★★★ その他検索エンジン & アーカイブ ★★★
         'Yandex_Core' => [
             'uas' => ['YandexBot', 'YandexImages', 'YandexVideo'], 
             'label' => 'Yandex (ロシア検索)',
@@ -174,7 +192,7 @@ function ggc_get_allowable_bots() {
             'description' => 'Internet Archiveなど、ウェブデータを収集・保存するボットです。',
         ],
 
-        // ★★★ 7. WordPress 内部処理 ★★★
+        // ★★★ WordPress 内部処理 ★★★
         'WordPress_Internal' => [
             'uas' => ['WordPress'],
             'label' => 'WordPress (内部/pingback)',

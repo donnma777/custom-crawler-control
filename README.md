@@ -11,6 +11,7 @@
 3.  **網羅的なボット定義**: Google、Bing、AI系（GPTBot, Gemini, ClaudeBotなど）、SNSプレビュー系、主要なSEOツール系を含む、**70種類以上**のUAパターンをグループ化して制御対象としています。
 4.  **厳格なアクセスチェック**: User-Agentが空のアクセスや、ボットがブラウザに偽装している可能性が高いアクセスは自動的にブロックします。
 5.  **API対応**: ブロック時にJSONリクエストであることを検知し、適切に403 ForbiddenのJSONエラーを返します（WordPress REST APIなどへの影響を最小限に抑えます）。
+6.  **反映時間**: すでに公開した情報の設定を反映しても即座に反映されません。これはクローラーの巡回スケジュールに依存するためです。詳しくは各クローラーの仕組みをみてください。
 
 ## ⚠️ 重要な免責事項 (保証の限界)
 
@@ -74,3 +75,4 @@
 * **Plugin URI**: https://github.com/donnma777/custom-crawler-control
 * **GitHub**: https://github.com/donnma777
 * **X**: https://x.com/donnma777
+
